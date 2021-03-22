@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import ChatList from '../src/components/ChatList';
+import ChatMessage from '../src/components/ChatMessage';
+import ButtonTheme from '../src/components/ButtonTheme';
+import { ThemeProvider } from 'styled-components';
+import { GlobalStyles } from './components/GlobalStyles';
+import { lightTheme, darkTheme } from './components/Themes';
+import { useDarkMode } from './utils/useDarkMode';
+import { Container, Content } from './styles';
 
 function App() {
+  const [theme, themeToggler] = useDarkMode();
+
+  const themeMode = theme === 'light' ? lightTheme : darkTheme;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={themeMode}>
+      <>
+        <GlobalStyles />
+        <Container>
+          <ButtonTheme
+            theme={theme}
+            themeMode={themeMode}
+            toggleTheme={themeToggler}
+          />
+          <Content>
+            <ChatList />
+            <ChatMessage theme={themeMode} />
+          </Content>
+        </Container>
+      </>
+    </ThemeProvider>
   );
 }
 
